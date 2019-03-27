@@ -1,5 +1,5 @@
 ===================================================
-27.03.19
+27/03/2019
 
 We created the class blob that we're going to use
 for every new blob that is created. This way, it's
@@ -35,4 +35,18 @@ one), and also check whether or not there is already a
 blob to the position we want to move the blob in.
 
 We also defined a function that is going to generate
-a blob randomly (name, position...) 
+a blob randomly (name, position...), and that checks
+whether or not there is already a blob at the generated
+position for the blob.
+
+
+HOW TO USE ?
+You can try these commands :
+	- generate_blob(W) to generate a blob of weight
+		less than W
+	- generate_blobs(n, W) to generate n blobs of 
+		weight less than W
+	- print(draw_grid()) to print the grid
+	- generate a new blob "b", print the grid, then
+		change the blob's position (b.pos = (x, y))
+		and print the grid again to see the changes.
