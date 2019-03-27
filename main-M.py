@@ -37,3 +37,7 @@ class blob:
             txt += "|\n"
         txt += "+" + ("-" * blob.M_square + "+") * gri_c + "\n"
         return txt
+
+    def changePos(self, pos):
+        blob.grille[self.pos[1]][self.pos[0]] = ""
+        blob.grille[pos[1]][pos[0]] = self
