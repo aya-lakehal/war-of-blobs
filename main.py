@@ -52,6 +52,28 @@ class blob:
         blob.grille[pos[1]][pos[0]] = self
         self.pos = pos
 
+    def rmv(self):
+        """
+            remove a blob from the grid and from the class
+        """
+        x,y  = self.pos
+        blob.grille[y][x] = ""
+        blob.blobs.remove(self)
+        del(self)
+
+        
+    def __add__(self, other):
+        """
+            writing "+" operator for blob to combine two blob 
+        """
+        if other.weight > self.weight:
+            other, self = self,other   # so self is always the biggest
+        self.name += other.name
+        self.weight += other.weight
+        self.color = tuple((self.weight*self.color[x] + other.weight*other.color[x])/(self.weight + other.weight) for x in range(3))
+        other.rmv()
+        self.string =  self.string[:self.string.index("(")] + "(" + str(self.weight) + ")"
+        return self
 
 # =============================================================================
 # OTHER FUNCTIONS
