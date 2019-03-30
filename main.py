@@ -10,6 +10,7 @@ Created on Wed Mar 20 10:35:33 2019
 # GLOBAL VARIABLES AND IMPORTS
 # =============================================================================
 from random import randrange, choice
+import colors
 
 # Temporary
 gri_c, gri_l = 10,6
@@ -30,11 +31,20 @@ class blob:
         self.weight = weight
         self.color = color
         self.pos = pos
-        self.string = "b" + str(len(blob.blobs) + 1) + "(" + str(weight) + ")"
-
+        
+        color_format = tuple(round(c*255) for c in self.color)
+        
+        # 2 strings because of len problem, due to colorization :
+        
+        # This one is used for computations of max len etc
+        self.string = "b{}({})".format(len(blob.blobs) + 1, self.weight)
+        # This one is only used to be displayed on the grid (colorized)
+        self.string_color = "b{}({})".format(len(blob.blobs) + 1, \
+                              colors.color(self.weight, fg=color_format))
+        
         blob.blobs.append(self)
         blob.grille[pos[1]][pos[0]] = self
-        blob.M_square = max(blob.M_square,len(self.string))
+        blob.M_square = max(blob.M_square, len(self.string))
         
     def changePos(self, pos):
         """ Change the position of the blob passed as a parameter
@@ -52,28 +62,35 @@ class blob:
         blob.grille[pos[1]][pos[0]] = self
         self.pos = pos
 
-    def rmv(self):
+    @staticmethod
+    def rmv(b):
         """
             remove a blob from the grid and from the class
         """
-        x,y  = self.pos
+        x, y  = b.pos
         blob.grille[y][x] = ""
-        blob.blobs.remove(self)
-        del(self)
+        blob.blobs.remove(b)
 
-        
     def __add__(self, other):
         """
-            writing "+" operator for blob to combine two blob 
+            writing "+" operator for blob to combine two blobs
         """
         if other.weight > self.weight:
-            other, self = self,other   # so self is always the biggest
+            other, self = self, other   # so self is always the biggest
         self.name += other.name
         self.weight += other.weight
-        self.color = tuple((self.weight*self.color[x] + other.weight*other.color[x])/(self.weight + other.weight) for x in range(3))
-        other.rmv()
-        self.string =  self.string[:self.string.index("(")] + "(" + str(self.weight) + ")"
+        self.color = tuple(round((self.weight*self.color[x] \
+                            + other.weight*other.color[x])/(self.weight \
+                                        + other.weight), 2) for x in range(3))
+        
+        color_format = tuple(round(c*256) for c in self.color)
+        
+        self.string = "b{}({})".format(blob.blobs.index(self) + 1, self.weight)
+        self.string_color = "b{}({})".format(blob.blobs.index(self) + 1, \
+                              colors.color(self.weight, fg=color_format))
+        blob.rmv(other)
         return self
+
 
 # =============================================================================
 # OTHER FUNCTIONS
@@ -100,7 +117,7 @@ def draw_grid():
             # Non-empty cells
             else:
                 c = blob.M_square - len(y.string)
-                txt += " "*(c//2) + y.string + " "*(c - c//2)
+                txt += " "*(c//2) + y.string_color + " "*(c - c//2)
                 
         # Last "|" of each line
         txt += "|\n"
@@ -110,7 +127,8 @@ def draw_grid():
 
 
 def generate_blobs(n, W):
-    if n > gri_c * gri_l:
+    # If there are more blobs than the number of cells OR the grid is full
+    if n > gri_c * gri_l or len(blob.blobs) == gri_l * gri_c:
         return -1
     
     for i in range(n):
@@ -118,9 +136,12 @@ def generate_blobs(n, W):
         
         
 def generate_blob(W):
+    if len(blob.blobs) == gri_l * gri_c:
+        return -1
+    
     string = choice(consonant) + choice(vowel)
     weight = randrange(W)
-    color = tuple(round(randrange(256)/256, 2) for x in range(3))
+    color = tuple(round(randrange(50, 256)/256, 2) for x in range(3))
     position = (randrange(gri_c), randrange(gri_l))
     
     # List of all existing positions in the grid
@@ -131,3 +152,15 @@ def generate_blob(W):
         position = (randrange(gri_c), randrange(gri_l))
     
     return blob(string, weight, color, position)
+    
+
+if __name__ == '__main__':
+    generate_blobs(5, 500)
+    print(draw_grid())
+    
+    
+    
+    
+    
+    
+    
