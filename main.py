@@ -9,7 +9,7 @@ Created on Wed Mar 20 10:35:33 2019
 # =============================================================================
 # GLOBAL VARIABLES AND IMPORTS
 # =============================================================================
-from random import randrange, choice
+from random import randrange, choice, shuffle
 import colors
 
 # Temporary
@@ -35,8 +35,8 @@ class blob:
         color_format = tuple(round(c*255) for c in self.color)
         
         # 2 strings because of len problem, due to colorization :
-        
-        # This one is used for computations of max len etc
+        #
+        # This one is used for computations (max len etc)
         self.string = "b{}({})".format(len(blob.blobs) + 1, self.weight)
         # This one is only used to be displayed on the grid (colorized)
         self.string_color = "b{}({})".format(len(blob.blobs) + 1, \
@@ -46,7 +46,7 @@ class blob:
         blob.grille[pos[1]][pos[0]] = self
         blob.M_square = max(blob.M_square, len(self.string))
         
-    def changePos(self, pos):
+    def change_pos(self, pos):
         """ Change the position of the blob passed as a parameter
         Param:
             :pos: (tuple) a tuple of coordinates (x, y)
@@ -89,6 +89,9 @@ class blob:
         self.string_color = "b{}({})".format(blob.blobs.index(self) + 1, \
                               colors.color(self.weight, fg=color_format))
         blob.rmv(other)
+        
+        blob.M_square = max(blob.M_square, len(self.string))
+        
         return self
 
 
@@ -152,11 +155,33 @@ def generate_blob(W):
         position = (randrange(gri_c), randrange(gri_l))
     
     return blob(string, weight, color, position)
-    
 
-if __name__ == '__main__':
-    generate_blobs(5, 500)
+
+# Next Step function : TEMPORARY (BECAUSE RANDOM)
+def wob_next():
+    l = blob.blobs
+    shuffle(l)
+    
+    pairs = [l[i:i+2] for i in range(0, len(l), 2)]
+    
+    for pair in pairs:
+        if len(pair) == 2:
+            pair[0] + pair[1]
+    
     print(draw_grid())
+
+
+# =============================================================================
+# MAIN
+# =============================================================================
+if __name__ == '__main__':
+    generate_blobs(5, 50)
+    
+    print(draw_grid())
+    
+    # While there are more than 1 blob
+    while len(blob.blobs) > 1:
+        wob_next()
     
     
     
