@@ -39,14 +39,32 @@ a blob randomly (name, position...), and that checks
 whether or not there is already a blob at the generated
 position for the blob.
 
+Moreover, we created a function next() that simulates
+the next step of the simulation. However, this function
+is temporary as it is random (which is not the purpose
+of this simulation). 
 
+We finally added the colorization of the blobs : for that,
+we used the module ansicolors, which we imported as
+"colors". Now, every blob's weight is colorized in the
+console, depend on the blob's color attribute (that we
+had to convert from values in [0:1] to values in [0:255])
+
+
+============
 HOW TO USE ?
+============
 You can try these commands :
-	- generate_blob(W) to generate a blob of weight
-		less than W
-	- generate_blobs(n, W) to generate n blobs of 
-		weight less than W
+* From a terminal, navigate through the project's
+directory and type the following command :
+	python3 main.py
+And see what happend
+* In a python console : 
+	- generate_blob(W) to generate a blob of
+	weight less than W
+	- generate_blobs(n, W) to generate n
+	blobs of weight less than W
 	- print(draw_grid()) to print the grid
-	- generate a new blob "b", print the grid, then
-		change the blob's position (b.pos = (x, y))
-		and print the grid again to see the changes.
+	- generate a new blob "b", print the grid,
+	then change the blob's position (b.pos = (x, y))
+	and print the grid again to see the changes.
