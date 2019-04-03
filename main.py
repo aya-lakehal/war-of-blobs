@@ -25,12 +25,16 @@ consonant = "QWRTYPSDFGHJKLZXCVBNM"
 class blob:
     blobs, M_square = [], 0
     grille = [['' for x in range(gri_c)] for y in range(gri_l)]
+
+    ## variale that i think we will need
+    add_blobs = []
     
-    def __init__(self, name, weight, color, pos):
+    def __init__(self, name, weight, color, pos, priority = 0):
         self.name = name
         self.weight = weight
         self.color = color
         self.pos = pos
+        self.priority = priority # this variable indicate the priority of combination with other variable (0:no comb),(3:row),(2:colon),(1:diagonal) 3>2>1>0
         
         color_format = tuple(round(c*255) for c in self.color)
         
@@ -39,9 +43,10 @@ class blob:
         # This one is used for computations (max len etc)
         self.string = "b{}({})".format(len(blob.blobs) + 1, self.weight)
         # This one is only used to be displayed on the grid (colorized)
+        '''
         self.string_color = "b{}({})".format(len(blob.blobs) + 1, \
                               colors.color(self.weight, fg=color_format))
-        
+        '''
         blob.blobs.append(self)
         blob.grille[pos[1]][pos[0]] = self
         blob.M_square = max(blob.M_square, len(self.string))
@@ -86,13 +91,44 @@ class blob:
         color_format = tuple(round(c*256) for c in self.color)
         
         self.string = "b{}({})".format(blob.blobs.index(self) + 1, self.weight)
+        '''
         self.string_color = "b{}({})".format(blob.blobs.index(self) + 1, \
                               colors.color(self.weight, fg=color_format))
+        '''
         blob.rmv(other)
         
         blob.M_square = max(blob.M_square, len(self.string))
+        self.priority = 0
         
         return self
+
+    def check_blobs(self):
+        x,y = self.pos
+        poss = [(x+1,y), (x,y+1), (x+1,y+1)]
+        if x == gri_c - 1:
+            poss = [None, (x,y+1), None]
+        if y == gri_l - 1:
+            poss[1] = poss[2] = None
+            if poss[0] != None: poss[0] = (x+1,y)
+
+        for x in range(len(poss)):
+            if poss[x] == None:continue
+            
+            if (3-x) <= self.priority:break
+            
+            blb = blob.grille[poss[x][1]][poss[x][0]]
+            if blb != "":
+                if blb.priority < (3-x):
+                    self.priority = blb.priority = 3-x
+                    couple = [x for x in blob.add_blobs if (x[0] == blb or x[1] == blb)]
+                    if len(couple) == 1:    
+                        couple = couple[0]
+                        other = couple[couple.index(blb) - 1]
+                        other.priority = 0
+                        blob.add_blobs.remove(couple)
+                        other.check_blobs()
+                    blob.add_blobs.append((self,blb))
+                    
 
 
 # =============================================================================
@@ -120,7 +156,7 @@ def draw_grid():
             # Non-empty cells
             else:
                 c = blob.M_square - len(y.string)
-                txt += " "*(c//2) + y.string_color + " "*(c - c//2)
+                txt += " "*(c//2) + y.string + " "*(c - c//2)
                 
         # Last "|" of each line
         txt += "|\n"
@@ -175,6 +211,7 @@ def wob_next():
 # MAIN
 # =============================================================================
 if __name__ == '__main__':
+    '''
     generate_blobs(5, 50)
     
     print(draw_grid())
@@ -182,7 +219,7 @@ if __name__ == '__main__':
     # While there are more than 1 blob
     while len(blob.blobs) > 1:
         wob_next()
-    
+    '''
     
     
     
