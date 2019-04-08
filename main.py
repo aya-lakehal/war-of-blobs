@@ -9,7 +9,7 @@ Created on Wed Mar 20 10:35:33 2019
 # =============================================================================
 # GLOBAL VARIABLES AND IMPORTS
 # =============================================================================
-from random import randrange, choice, shuffle
+from random import randrange, choice, shuffle, randint
 import colors
 
 # Temporary
@@ -90,8 +90,8 @@ class blob:
         
         color_format = tuple(round(c*256) for c in self.color)
         
-        self.string = "b{}({})".format(blob.blobs.index(self) + 1, self.weight)
-        self.string_color = "b{}({})".format(blob.blobs.index(self) + 1, \
+        self.string = self.string[:self.string.index("(") + 1] + str(self.weight) + ")"
+        self.string_color = self.string[:self.string.index("(")]+"({})".format(blob.blobs.index(self) + 1, \
                               colors.color(self.weight, fg=color_format))
         blob.rmv(other)
         
@@ -155,7 +155,7 @@ def draw_grid():
             # Non-empty cells
             else:
                 c = blob.M_square - len(y.string)
-                txt += " "*(c//2) + y.string_color + " "*(c - c//2)
+                txt += " "*(c//2) + y.string + " "*(c - c//2)
                 
         # Last "|" of each line
         txt += "|\n"
@@ -206,12 +206,12 @@ def wob_next():
     - set([x[1] for x in blob.add_blobs])
     
     for b in remaining:
-        x, y = randrange(-1, 1), randrange(-1, 1)
+        x, y = randint(-1, 1), randint(-1, 1)
         
         while True:
             while (b.pos[0] + x) < 0 or (b.pos[0] + x) >= gri_c or (b.pos[1] + y) < 0 \
             or (b.pos[1] + y) >= gri_l :
-                x, y = randrange(-1, 1), randrange(-1, 1)
+                x, y = randint(-1, 1), randint(-1, 1)
         
             if blob.grille[b.pos[0] + x][b.pos[1] + y] != "" or (x, y) == (0, 0):
                 continue
