@@ -43,10 +43,8 @@ class blob:
         # This one is used for computations (max len etc)
         self.string = "b{}({})".format(len(blob.blobs) + 1, self.weight)
         # This one is only used to be displayed on the grid (colorized)
-        '''
         self.string_color = "b{}({})".format(len(blob.blobs) + 1, \
                               colors.color(self.weight, fg=color_format))
-        '''
         blob.blobs.append(self)
         blob.grille[pos[1]][pos[0]] = self
         blob.M_square = max(blob.M_square, len(self.string))
@@ -91,10 +89,8 @@ class blob:
         color_format = tuple(round(c*256) for c in self.color)
         
         self.string = "b{}({})".format(blob.blobs.index(self) + 1, self.weight)
-        '''
         self.string_color = "b{}({})".format(blob.blobs.index(self) + 1, \
                               colors.color(self.weight, fg=color_format))
-        '''
         blob.rmv(other)
         
         blob.M_square = max(blob.M_square, len(self.string))
@@ -156,7 +152,7 @@ def draw_grid():
             # Non-empty cells
             else:
                 c = blob.M_square - len(y.string)
-                txt += " "*(c//2) + y.string + " "*(c - c//2)
+                txt += " "*(c//2) + y.string_color + " "*(c - c//2)
                 
         # Last "|" of each line
         txt += "|\n"
