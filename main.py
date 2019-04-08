@@ -17,6 +17,7 @@ gri_c, gri_l = 10,6
 
 vowel = "aiueo"
 consonant = "QWRTYPSDFGHJKLZXCVBNM"
+max_priority = 4
 
 
 # =============================================================================
@@ -28,6 +29,7 @@ class blob:
 
     ## variale that i think we will need
     add_blobs = []
+    max_priority = 4
     
     def __init__(self, name, weight, color, pos, priority = 0):
         self.name = name
@@ -100,22 +102,23 @@ class blob:
 
     def check_blobs(self):
         x,y = self.pos
-        poss = [(x+1,y), (x,y+1), (x+1,y+1)]
+        poss = [(x+1,y), (x,y+1), (x+1,y+1), (x-1, y+1)]
         if x == gri_c - 1:
-            poss = [None, (x,y+1), None]
+            poss = [None, (x,y+1), None, (x-1, y+1)]
         if y == gri_l - 1:
-            poss[1] = poss[2] = None
-            if poss[0] != None: poss[0] = (x+1,y)
+            poss[1] = poss[2] = poss[3] = None
+        if x == 0:
+            poss[3] == None
 
         for x in range(len(poss)):
             if poss[x] == None:continue
             
-            if (3-x) <= self.priority:break
+            if (max_priority-x) <= self.priority:break
             
             blb = blob.grille[poss[x][1]][poss[x][0]]
             if blb != "":
-                if blb.priority < (3-x):
-                    self.priority = blb.priority = 3-x
+                if blb.priority < (max_priority-x):
+                    self.priority = blb.priority = max_priority-x
                     couple = [x for x in blob.add_blobs if (x[0] == blb or x[1] == blb)]
                     if len(couple) == 1:    
                         couple = couple[0]
@@ -189,17 +192,36 @@ def generate_blob(W):
     return blob(string, weight, color, position)
 
 
-# Next Step function : TEMPORARY (BECAUSE RANDOM)
 def wob_next():
-    l = blob.blobs
-    shuffle(l)
+    for line in blob.grille:
+        for cell in line:
+            if cell != "":
+                cell.check_blobs()
     
-    pairs = [l[i:i+2] for i in range(0, len(l), 2)]
+    for b in blob.add_blobs:
+        print(b)
+        b[0] + b[1]
+        
+    remaining = set(blob.blobs) - set([x[0] for x in blob.add_blobs]) \
+    - set([x[1] for x in blob.add_blobs])
     
-    for pair in pairs:
-        if len(pair) == 2:
-            pair[0] + pair[1]
+    for b in remaining:
+        x, y = randrange(-1, 1), randrange(-1, 1)
+        
+        while True:
+            while (b.pos[0] + x) < 0 or (b.pos[0] + x) >= gri_c or (b.pos[1] + y) < 0 \
+            or (b.pos[1] + y) >= gri_l :
+                x, y = randrange(-1, 1), randrange(-1, 1)
+        
+            if blob.grille[b.pos[0] + x][b.pos[1] + y] != "" or (x, y) == (0, 0):
+                continue
+            else:
+                break
+        
+        b.change_pos((b.pos[0] + x, b.pos[1] + y))
     
+    blob.add_blobs = []
+        
     print(draw_grid())
 
 
