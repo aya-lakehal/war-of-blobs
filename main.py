@@ -207,18 +207,22 @@ def generate_blob(W):
 
 
 def wob_next():
+    # Check_blobs() for every blob of the grid
     for line in blob.grille:
         for cell in line:
             if cell != "":
                 cell.check_blobs()
     
+    # For each couple of blobs, merge them
     for b in blob.add_blobs:
         print(b)
         b[0] + b[1]
         
+    # Group the blobs that did'nt merge into a list
     remaining = set(blob.blobs) - set([x[0] for x in blob.add_blobs]) \
     - set([x[1] for x in blob.add_blobs])
     
+    # Set the moving function for remaining blobs
     for b in remaining:
         x, y = randint(-1, 1), randint(-1, 1)
         
@@ -234,6 +238,7 @@ def wob_next():
         
         b.change_pos((b.pos[0] + x, b.pos[1] + y))
     
+    # Reset the add_blobs list
     blob.add_blobs = []
         
     print(draw_grid())
