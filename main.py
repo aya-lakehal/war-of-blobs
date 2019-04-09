@@ -91,8 +91,8 @@ class blob:
         color_format = tuple(round(c*256) for c in self.color)
         
         self.string = self.string[:self.string.index("(") + 1] + str(self.weight) + ")"
-        self.string_color = self.string[:self.string.index("(")]+"({})".format(blob.blobs.index(self) + 1, \
-                              colors.color(self.weight, fg=color_format))
+        self.string_color = self.string[:self.string.index("(")] + \
+        "({})".format(colors.color(self.weight, fg=color_format))
         blob.rmv(other)
         
         blob.M_square = max(blob.M_square, len(self.string))
@@ -119,6 +119,8 @@ class blob:
             if blb != "":
                 if blb.priority < (max_priority-x):
                     self.priority = blb.priority = max_priority-x
+
+                    # this part check if the other blob is already connected with other blob (b'), if it is then it sets the priority to 0 for the b' and it check_blobs
                     couple = [x for x in blob.add_blobs if (x[0] == blb or x[1] == blb)]
                     if len(couple) == 1:    
                         couple = couple[0]
@@ -126,6 +128,18 @@ class blob:
                         other.priority = 0
                         blob.add_blobs.remove(couple)
                         other.check_blobs()
+                    ###
+
+                    # this part check if self is already connected with other blob (b'), if it is then it sets the priority to 0 for the b' and it check_blobs
+                    couple2 = [x for x in blob.add_blobs if (x[0] == self or x[1] == self)]
+                    if len(couple2) == 1:    
+                        couple2 = couple2[0]
+                        other = couple2[couple2.index(self) - 1]
+                        other.priority = 0
+                        blob.add_blobs.remove(couple2)
+                        other.check_blobs()
+                    ###
+                    
                     blob.add_blobs.append((self,blb))
                     
 
