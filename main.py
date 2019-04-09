@@ -17,7 +17,7 @@ gri_c, gri_l = 10,6
 
 vowel = "aiueo"
 consonant = "QWRTYPSDFGHJKLZXCVBNM"
-max_priority = 4
+max_priority = 6
 
 
 # =============================================================================
@@ -29,7 +29,6 @@ class blob:
 
     ## variale that i think we will need
     add_blobs = []
-    max_priority = 4
     
     def __init__(self, name, weight, color, pos, priority = 0):
         self.name = name
@@ -102,13 +101,15 @@ class blob:
 
     def check_blobs(self):
         x,y = self.pos
-        poss = [(x+1,y), (x,y+1), (x+1,y+1), (x-1, y+1)]
+        poss = [(x+1,y), (x,y+1), (x+1,y+1),(x-1,y-1),(x-1, y+1),(x+1,y-1)]
         if x == gri_c - 1:
-            poss = [None, (x,y+1), None, (x-1, y+1)]
+            poss = [None, (x,y+1), None, (x-1,y-1),(x-1, y+1),None]
         if y == gri_l - 1:
-            poss[1] = poss[2] = poss[3] = None
+            poss[1] = poss[2] = poss[4] = None
         if x == 0:
-            poss[3] == None
+            poss[3] = poss[4] = None
+        if y == 0:
+            poss[3] = poss[5] = None
 
         for x in range(len(poss)):
             if poss[x] == None:continue
