@@ -9,22 +9,26 @@ Created on Wed Mar 20 10:35:33 2019
 # =============================================================================
 # GLOBAL VARIABLES AND IMPORTS
 # =============================================================================
-from random import randrange, choice, randint
+from random import randrange, choice
 from math import sqrt
+import json
 import colors
 
 vowel = "aiueo"
 consonant = "QWRTYPSDFGHJKLZXCVBNM"
 max_priority = 6
 
+gri_c, gri_l = 0, 0
+grille = []
 
 # =============================================================================
 # CLASS BLOB
 # =============================================================================
 class blob:
+    # List of blobs / Maximum length of string (for grid drawing)
     blobs, M_square = [], 0
-
-    ## variale that i think we will need
+    
+    # List for "+" operator (used in __add__ function)
     add_blobs = []
     
     def __init__(self, name, weight, color, pos, priority = 0):
@@ -281,7 +285,7 @@ def generate_blob(W):
         return -1
     
     string = choice(consonant) + choice(vowel)
-    weight = randrange(W)
+    weight = randrange(1, W)
     color = tuple(round(randrange(50, 256)/256, 2) for x in range(3))
     position = (randrange(gri_c), randrange(gri_l))
     
@@ -329,19 +333,111 @@ def wob_next():
         
     print(draw_grid())
     
+    
+def export_file(filename):
+    """ Export the current configuration into a json file
+    Param: 
+        filename (str) the name of the file to save
+    Return:
+        (int) the state of the export (0: not exported, 1: exported)
+        
+    CU : the filename has to end with : .json
+    """
+    to_save = list()
+    
+    # Save the grid configuration
+    grid = {"rows": gri_l, "col": gri_c}
+    to_save.append(grid)
+    
+    # Add each blob (cannot do with blob.blobs : all the blobs created since
+    # the launch of the program will be listed, EVEN THOSE deleted)
+    for l in grille:
+        for c in l:
+            if c != "":
+                d = dict()  
+                
+                d["name"] = c.name
+                d["weight"] = c.weight
+                d["pos"] = c.pos
+                d["color"] = c.color
+        
+                to_save.append(d)
+    
+    try:
+        # If the file doesn't exists, create it
+        with open(filename, "x", encoding="utf-8") as f:
+            json.dump(to_save, f, indent=4)
+            
+        print("File exported successfully as", filename)
+        return 1
+    except FileExistsError:
+        over = input("A file of this name already exists. Overwrite it? [y/n] : ")
+        
+        if over.lower() != "y":
+            return 0
+        
+        # Overwrite the existing file
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(to_save, f, indent=4)
+            
+        print("File exported successfully as", filename)
+        return 1
+        
 
+def import_file(filename):
+    """ Import a configuration from a json file
+    Param:
+        filename (str) the name of the file to import
+    Return:
+        (int) the state of the import (0: not imported, 1: imported)
+    """
+    # Clear the current configuration
+    blob.blobs = []
+    
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print("Error: file not found")
+        return 0
+    
+    # Define the global variables (IMPORTANT)
+    global gri_c, gri_l, grille
+    gri_c = data[0]['col']
+    gri_l = data[0]['rows']
+
+    # Setup the grid
+    grille = [['' for x in range(gri_c)] for y in range(gri_l)]
+    
+    # Remove the first dictionnary (which is the grid configuration)
+    data.pop(0)
+    
+    # Create all blobq
+    for b in data:
+        blob(b["name"], b["weight"], b["color"], b["pos"])
+    
+    print(draw_grid())
+    
+    return 1
 
 
 # =============================================================================
 # MAIN
 # =============================================================================
 if __name__ == '__main__':
-    gri_c = input("Number of columns ? : ")
-    gri_l = input("Number of rows ? : ")
-    n = input("Number of blobs to generate ? : ")
-    W = input("Maximum weight of each blob ? : ")
-
+    import sys
+    gen = input("Generate a random simulation? [y/n] : ")
+    
+    if gen.lower() != "y":
+        sys.exit()
+    
     try:
+        gri_c = input("Number of columns ? : ")
+        gri_l = input("Number of rows ? : ")
+            
+        n = input("Number of blobs to generate ? : ")
+        W = input("Maximum weight of each blob ? : ")
+        
         gri_c = int(gri_c)
         gri_l = int(gri_l)
         
@@ -356,7 +452,7 @@ if __name__ == '__main__':
         # While there are more than 1 blob
         while len(blob.blobs) > 1:
             wob_next()
-    except TypeError:
+    except ValueError:
         print("Error: all data have to be positive integers")
         
     
