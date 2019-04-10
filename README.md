@@ -83,21 +83,60 @@ Several changes :
 * Renamed `change_pos` method to `move_pos` : the position passed as parameter will be the relative move from the blob's position,
 not absolute anymore.
 * Add `move` method that moves the blob towards the biggest one and, in case there are several ones (same size), towards the nearest.
+* Add `import_file` and `export_file` functions to import and export some configurations.
+* Add the details of each step (when we go to the next step, every changes are printed : merges, moves...)
+* Converted the `change_pos` method to `move_function` so that the blob moves to the position `x, y` from its actual position instead
+of going to the absolute position `x, y`.
+* Add docstrings and comments for every function/method.
+* Replace `blob.grille` variable by `grille` (as a global variable), because it is more convenient.
+* Add some code into `if __name__ == "__main__":` so that we can now launch a simulation from a terminal.
+* Add `create_grid` function to create a grid of `n` columns and `m` rows.
 
 <br>
-<br>
 
-<br>
-
-<br>
-<br>
-<br>
 
 
 # HOW TO USE ?
 
-You can try these commands :
-* `generate_blob(W)`, with `W` being a positive integer, to generate a blob of weight less than `W`
-* `generate_blobs(n, W)`, with `n` and `W` being 2 positive integers, to generate `n` blobs of weight less than `W`
-* `print(draw_grid())` to print the grid
-* *(i)* Generate a new blob `b`, *(ii)* print the grid, *(iii)* then change the blob's position (`b.pos = (x, y)`)	and *(iv)* print the grid again to see the changes.
+From a terminal, try these commands:
+
+1. Launch the program typing :
+```
+python3 main.py
+```
+
+2. When asked to create a random simulation, type `y` (yes), setup your configuration and see what happens.
+
+3. In a python shell, execute the program. When asked to create a random simulation, type `n` (no).
+4. Then, setup up your configuration. If you want a grid of `n` columns and `m` rows, type in : 
+```python
+>>> create_grid(n, m)
+```
+5. Display your configuration by typing : 
+```python
+>>> print(draw_grid())
+```
+6. Create blobs by using one (or more) of the commands below :
+```python
+>>> blob([name], [weight], [color], [position]) # To create a blob manually
+>>> generate_blob(W) # To create a blob randomly, of weight less than or equal to W
+>>> generate_blobs(n, W) # To create n blobs of weight less than or equal to W
+```
+7. Display your configuration by typing
+```python
+>>> print(draw_grid())
+```
+8. When you're done, export your configuration :
+```python
+>>> export_file(filename)
+```
+where filename is the name of the file where you want your configuration to be saved.
+> **IMPORTANT** : the name of the file has to end with `.json` **!**
+9. Either continue adding/removing blobs or close the program, then open it again and import your configuration using:
+```python
+>>> import_file(filename)
+```
+where filename is the name of the file where you want your configuration to be loaded from.
+
+10. Display the imported configuration (`print(draw_grid())`) and use `wob_next()` to go to the next step of the simulation.
+> If you don't want to type `wob_next` manually for each step, just type in : `while len(blob.blobs) > 1 : wob_next()`.

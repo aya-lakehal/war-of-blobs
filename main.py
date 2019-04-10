@@ -18,9 +18,6 @@ vowel = "aiueo"
 consonant = "QWRTYPSDFGHJKLZXCVBNM"
 max_priority = 6
 
-gri_c, gri_l = 0, 0
-grille = []
-
 # =============================================================================
 # CLASS BLOB
 # =============================================================================
@@ -252,6 +249,21 @@ def draw_grid():
     # Last line
     txt += "+" + ("-" * blob.M_square + "+") * gri_c + "\n"
     return txt
+
+def create_grid(n, m):
+    """ Create a grid of n columns and m rows
+    Param:
+        n (int) the number of columns
+        m (int) the numbers of rows
+    Return:
+        None
+        
+    CU : n, m > 0
+    """
+    global gri_c, gri_l, grille
+    
+    gri_c, gri_l = n, m
+    grille = [['' for x in range(gri_c)] for y in range(gri_l)]
 
 
 def generate_blobs(n, W):
