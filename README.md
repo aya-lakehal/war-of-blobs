@@ -50,17 +50,54 @@ Addition of the colorization of the blobs : for that, we used the module `ansico
 
 <br>
 
+---
+
+## 04/04/19
+
+Creation of the method that checks the priority of each blob, in order to know how to merge them.
+
+<br>
+
+---
+
+## 08/04/19
+
+Add the other diagonal priority (from top right to bottom left).
+
+<br>
+
+--- 
+
+## 09/04/19
+
+* Fix the `check_blobs` function (priority bugs). Sometimes the blobs either didn't merge or merged with the wrong priority.
+* Also other fixes on the `check_blobs` function. (2 commits made).
+
+<br>
+
+---
+
+## 10/04/19
+
+Several changes :
+* Renamed `change_pos` method to `move_pos` : the position passed as parameter will be the relative move from the blob's position,
+not absolute anymore.
+* Add `move` method that moves the blob towards the biggest one and, in case there are several ones (same size), towards the nearest.
+
+<br>
+<br>
+
+<br>
+
+<br>
+<br>
+<br>
+
+
 # HOW TO USE ?
 
 You can try these commands :
-* From a terminal, navigate through the project's directory and type the following command :
-```
-python3 main.py
-```
-And see what happens.
-
-* In a python console :
-    * `generate_blob(W)`, with `W` being a positive integer, to generate a blob of weight less than `W`
-    * `generate_blobs(n, W)`, with `n` and `W` being 2 positive integers, to generate `n` blobs of weight less than `W`
-    * `print(draw_grid())` to print the grid
-    * (i) Generate a new blob `b`, (ii) print the grid, (iii) then change the blob's position (`b.pos = (x, y)`)	and (iv) print the grid again to see the changes.
+* `generate_blob(W)`, with `W` being a positive integer, to generate a blob of weight less than `W`
+* `generate_blobs(n, W)`, with `n` and `W` being 2 positive integers, to generate `n` blobs of weight less than `W`
+* `print(draw_grid())` to print the grid
+* *(i)* Generate a new blob `b`, *(ii)* print the grid, *(iii)* then change the blob's position (`b.pos = (x, y)`)	and *(iv)* print the grid again to see the changes.
