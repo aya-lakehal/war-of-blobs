@@ -361,19 +361,15 @@ def export_file(filename):
     grid = {"rows": gri_l, "col": gri_c}
     to_save.append(grid)
     
-    # Add each blob (cannot do with blob.blobs : all the blobs created since
-    # the launch of the program will be listed, EVEN THOSE deleted)
-    for l in grille:
-        for c in l:
-            if c != "":
-                d = dict()  
-                
-                d["name"] = c.name
-                d["weight"] = c.weight
-                d["pos"] = c.pos
-                d["color"] = c.color
+    # Add each blob to the list to save
+    for b in blob.blobs:
+        d = dict()
+        d["name"] = b.name
+        d["weight"] = b.weight
+        d["pos"] = b.pos
+        d["color"] = b.color
         
-                to_save.append(d)
+        to_save.append(d)
     
     try:
         # If the file doesn't exists, create it
@@ -438,6 +434,7 @@ def import_file(filename):
 # =============================================================================
 if __name__ == '__main__':
     import sys
+    blob.blobs = []
     gen = input("Generate a random simulation? [y/n] : ")
     
     if gen.lower() != "y":
