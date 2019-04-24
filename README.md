@@ -2,11 +2,20 @@
 
 **GitHub** link of the project : [https://github.com/luddoz-c/war-of-blobs](https://github.com/luddoz-c/war-of-blobs)
 
-Please feel free to open an issue if you detect some problems, want to suggest any improvement of if you want to give us some advice.
+Please feel free to open an issue if you detect some problems, want to suggest any improvement or if you want to give us some advice.
 
 <br>
  
 # CHANGELOG
+
+## 24/04/19
+
+Create `reset_grid` function to reset the grid when needed, in order to start a new
+one without having to launch the program again.
+
+<br>
+
+---
 
 ## 13/04/19
 
