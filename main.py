@@ -213,8 +213,7 @@ class blob:
         # Move the blob to x, y from its position
         self.move_pos(x, y)
         
-        return other
-                    
+        return other                    
 
 
 # =============================================================================
@@ -280,7 +279,7 @@ def generate_blobs(n, W):
     if n > gri_c * gri_l or len(blob.blobs) == gri_l * gri_c:
         return -1
     
-    for i in range(n):
+    for i in range(n):  
         generate_blob(W)
         
         
@@ -312,6 +311,14 @@ def generate_blob(W):
 
 
 def wob_next():
+    """ Simulate the next step of the simulation
+    Param:
+        None
+    Return:
+        None
+    
+    CU : none
+    """
     # Check_blobs() for every blob of the grid
     for line in grille:
         for cell in line:
@@ -427,6 +434,21 @@ def import_file(filename):
     print(draw_grid())
     
     return 1
+
+def reset_grid():
+    """ Reset the grid of the simulation (assign "" to each cell of the grid
+    and remove the blobs from the blob.blobs list). Also resets blob.M_square
+    Param:
+        None
+    Return:
+        None
+        
+    CU : none
+    """
+    blob.blobs, blob.M_square = [], 0
+    for r in range(len(grille)):
+            for c in range(len(grille[r])):
+                grille[r][c] = ""
 
 
 # =============================================================================
