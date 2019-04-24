@@ -41,6 +41,9 @@ of going to the absolute position `x, y`.
 * Add `create_grid` function to create a grid of `n` columns and `m` rows.
 
 <br>
+<br>
+<br>
+<br>
 
 --- 
 
@@ -50,8 +53,6 @@ of going to the absolute position `x, y`.
 * Fix the `check_blobs` function (priority bugs). Sometimes the blobs either didn't merge or merged with the wrong priority.
 * Also other fixes on the `check_blobs` function. (2 commits made).
 
-<br>
-<br>
 <br>
 
 ---
@@ -88,6 +89,10 @@ Definition of the `changePos` method, which is going to change the value of the 
 
 Also, definition of a function that is going to generate a blob randomly (name, position...), and that checks whether or not there is already a blob at the generated position for the blob. Also, we created a function `generate_blobs` that uses the previous function to generated several blobs.
 
+<br>
+<br>
+<br>
+<br>
 <br>
 
 ---
@@ -130,6 +135,8 @@ python3 main.py
 ```python
 >>> create_grid(n, m)
 ```
+<br>
+
 5. Display your configuration by typing : 
 ```python
 >>> print(draw_grid())
