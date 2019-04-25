@@ -1,12 +1,26 @@
-# INFORMATIONS
+# <center> **WAR OF BLOBS** :gun:</center>
 
-**GitHub** link of the project : [https://github.com/luddoz-c/war-of-blobs](https://github.com/luddoz-c/war-of-blobs)
+# INFORMATIONS :information_source:
+
+## Authors :bust_in_silhouette:
+
+* Ludovic Chombeau
+* Mohamad Ammad Said
+
+<br>
+
+## Presentation :pencil:
+
+War of blobs is a simulation involving blobs, which are small creatures, sparsed on a grid
+in which they can move and each other to become bigger and bigger.
+
+**GitHub** link of the project : [https://github.com/luddoz-c/war-of-blobs](https://github.com/luddoz-c/war-of-blobs) :link:
 
 Please feel free to open an issue if you detect some problems, want to suggest any improvement or if you want to give us some advice.
 
 <br>
  
-# CHANGELOG
+# CHANGELOG :clock2:
 
 ## 24/04/19
 
@@ -40,9 +54,6 @@ of going to the absolute position `x, y`.
 * Add some code into `if __name__ == "__main__":` so that we can now launch a simulation from a terminal.
 * Add `create_grid` function to create a grid of `n` columns and `m` rows.
 
-<br>
-<br>
-<br>
 <br>
 
 --- 
@@ -80,6 +91,13 @@ Creation of the `next` function that simulates the next step of the simulation. 
 Addition of the colorization of the blobs : for that, we used the module `ansicolors`, which we imported as `colors`. Now, every blob's weight is colorized in the console, depending on the blob's color attribute (that we had to convert from values in `[0:1]` to values in `[0:255]`)
 
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 ---
 
@@ -89,10 +107,6 @@ Definition of the `changePos` method, which is going to change the value of the 
 
 Also, definition of a function that is going to generate a blob randomly (name, position...), and that checks whether or not there is already a blob at the generated position for the blob. Also, we created a function `generate_blobs` that uses the previous function to generated several blobs.
 
-<br>
-<br>
-<br>
-<br>
 <br>
 
 ---
@@ -135,7 +149,6 @@ python3 main.py
 ```python
 >>> create_grid(n, m)
 ```
-<br>
 
 5. Display your configuration by typing : 
 ```python
@@ -156,12 +169,25 @@ python3 main.py
 >>> export_file(filename)
 ```
 where filename is the name of the file where you want your configuration to be saved.
-> **IMPORTANT** : the name of the file has to end with `.json` **!**
+> **IMPORTANT** : the name of the file has to end with `.json` :warning:
 9. Either continue adding/removing blobs or close the program, then open it again and import your configuration using:
 ```python
 >>> import_file(filename)
 ```
 where filename is the name of the file where you want your configuration to be loaded from.
+> Note that a sample file is available if you want to try with a different configuration
+from yours (`simulation.json`).
 
-10. Display the imported configuration (`print(draw_grid())`) and use `wob_next()` to go to the next step of the simulation.
-> If you don't want to type `wob_next` manually for each step, just type in : `while len(blob.blobs) > 1 : wob_next()`.
+10. Display the imported configuration with:
+
+```py
+>>> print(draw_grid())
+```
+and use `wob_next()` to go to the next step of the simulation.
+
+
+> If you don't want to type `wob_next()` manually for each step, just type in :
+```py
+>>> while len(blob.blobs) > 1 :
+        wob_next()
+```
